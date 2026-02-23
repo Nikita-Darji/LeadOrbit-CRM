@@ -1,4 +1,4 @@
-const {registerUser} =require("./service")
+const {registerUser} =require("./auth.service")
 
 //Handle user registration request
 
@@ -19,10 +19,7 @@ async function register(req,res){
             }
         });
     }catch(error){
-        res.status(error.statusCode || 500).json({
-            success:false,
-            message:error.message||"Server Error",
-        });
+            next(error)
     }
 
 }
