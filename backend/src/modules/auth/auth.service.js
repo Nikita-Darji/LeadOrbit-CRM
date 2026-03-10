@@ -1,13 +1,16 @@
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 const User = require("../users/users.model");
 
+/**
+ * Register user
+ */
 async function registerUser(data){
     const {name,email,password,role} = data
 
     // Check if email already exists
     const existingUser= await User.findOne({email});
     if(existingUser){
-        const error= new Error("Email Already Registered")
+        const error= new Error("Email Already Registered");
         error.statusCode=409;
         throw error;
     }
@@ -25,4 +28,22 @@ async function registerUser(data){
     return user;
 
 }
-module.exports={registerUser}
+/**
+ * Login User
+ */
+async function loginUser(email,password){
+    const user = await User.findOne({email});
+    if(!user){
+        const error = new Error("Invalid email or password");
+        error.statusCode = 401;
+        throw error;
+    }
+    const match=await bcrypt.compare(password,user.password);
+    if(!match){
+        const error = new Error("Invalid email or password");
+        error.statusCode = 401;
+        throw error;
+    }
+    return user;
+}
+module.exports={registerUser,loginUser};
