@@ -49,8 +49,18 @@ async function login(req,res,next){
         next(error)
     }
 }
-
+async function getMe(req,res,next){
+    try{
+        res.status(200).json({
+            success:true,
+            data:req.user
+        })
+    }
+    catch(error){
+        next(error)
+    }
+}
 
 module.exports={
-    register,login
+    register,login,getMe
 };

@@ -53,7 +53,6 @@ async function getById(req,res,next){
     }catch(error){
         next(error);
     }
-
 }
 /**
  * Update lead
